@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fridge List</title>
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color:  #f2f2f2;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #f2f2f2;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+<h1>All Fridge List</h1>
+<table id="fridgeTable" class="display">
+    <thead>
+    <tr>
+        <th>Product ID</th>
+        <th>Brand</th>
+        <th>Type</th>
+        <th>Model</th>
+        <th>Model Description</th>
+        <th>Color</th>
+        <th>Capacity</th>
+        <th>Star Rating</th>
+        <th>MRP</th>
+        <th>MOP</th>
+        <th>DP</th>
+        <th>Quantity</th>
+        <th>Margin</th>
+        <th>Margin %</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="fridge : ${listfridge}">
+        <td th:text="${fridge.productId}"></td>
+        <td th:text="${fridge.brand}"></td>
+        <td th:text="${fridge.type}"></td>
+        <td th:text="${fridge.model}"></td>
+        <td th:text="${fridge.modelDesc}"></td>
+        <td th:text="${fridge.color}"></td>
+        <td th:text="${fridge.capacity}"></td>
+        <td th:text="${fridge.starRating}"></td>
+        <td th:text="${fridge.mrp}"></td>
+        <td th:text="${fridge.mop}"></td>
+        <td th:text="${fridge.dp}"></td>
+        <td th:text="${fridge.quantity}"></td>
+        <td th:text="${fridge.margin}"></td>
+        <td th:text="${fridge.marginPer}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Include DataTables JavaScript -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script>
+        $(document).ready(function() {
+            $('#fridgeTable').DataTable();
+        });
+    </script>
+</body>
+</html>

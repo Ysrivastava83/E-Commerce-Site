@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title> Fridge Home Page</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0; /* Light grey background */
+      font-family: 'Roboto', sans-serif;
+    }
+    .header-container {
+      width: 100%;
+      background-color: #00FFFF; /* Light cyan background */
+      margin-bottom: 20px; /* Space below the header */
+    }
+    .header {
+      text-align: center; /* Align text to the center */
+      padding: 20px;
+      font-weight: bold; /* Make text bold */
+      color: #333333; /* Set text color to dark gray for better contrast */
+      margin: 0; /* Remove default margins */
+    }
+    .header h1 {
+      font-size: 4em; /* Make h1 larger (adjust as needed) */
+      margin: 0; /* Remove gap below h1 */
+    }
+    .header p {
+      font-size: 1.2em; /* Optional: Increase font size of p if needed */
+      margin: 0; /* Remove default top margin for p */
+    }
+
+    .options-bar {
+      width: 100%;
+      background-color: #FFFFFF; /* White background for the options bar */
+      border-bottom: 2px solid #000000; /* Black line below the header */
+      display: flex;
+      justify-content: center; /* Center align the options horizontally */
+      padding: 10px 0; /* Add padding around the options */
+      margin-bottom: 20px; /* Space below the options bar */
+    }
+    .option {
+      margin: 0 15px; /* Space between options */
+      font-size: 16px; /* Font size for options */
+      color: #333333; /* Dark text color */
+      cursor: pointer; /* Pointer cursor on hover */
+    }
+    .option:hover {
+      text-decoration: underline; /* Underline on hover for better UX */
+    }
+
+    .box-container {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px; /* Add some space between header and boxes */
+    }
+    .box {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .image-container {
+      width: 100%;
+      height: 150px; /* Fixed height for images */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .box img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 4px;
+    }
+    .box h2 {
+      margin: 0;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="header-container">
+  <div class="header">
+    <h1>Chandra & Co.</h1>
+    <p>Since 1990</p>
+  </div>
+</div>
+<div class="options-bar">
+  <div class="option" onclick="location.href='all'">Display all</div>
+  <div class="option" onclick="location.href='#'">Search by Model</div>
+  <div class="option" onclick="location.href='#'">Orders</div>
+  <div class="option" onclick="location.href='#'">Settings</div>
+</div>
+<div class="box-container">
+  <div class="box" onclick="location.href='Whirlpool';">
+    <div class="image-container">
+      <img src="/Fridge_CompanyLOGO/fridge_whirlpool.jpg" alt="WhirlpoolLogo">
+    </div>
+    <h2>Whirlpool</h2>
+  </div>
+  <div class="box" onclick="location.href='LG';">
+    <div class="image-container">
+      <img src="/Fridge_CompanyLOGO/fridge_lg.jpg" alt="LgLogo">
+    </div>
+    <h2>LG</h2>
+  </div>
+  <div class="box" onclick="location.href='Voltas';">
+    <div class="image-container">
+      <img src="/Fridge_CompanyLOGO/fridge_voltas.jpg" alt="VoltasLogo">
+    </div>
+    <h2>Voltas</h2>
+  </div>
+  <div class="box" onclick="location.href='Other';">
+    <div class="image-container">
+      <img src="/Fridge_CompanyLOGO/other.jpg" alt="other">
+    </div>
+    <h2>Other</h2>
+  </div>
+</div>
+</body>
+</html>

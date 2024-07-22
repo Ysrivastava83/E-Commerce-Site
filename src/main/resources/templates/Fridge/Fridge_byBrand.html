@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Fridge List</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #AFEEEE;
+    }
+    h1 {
+        color: #333;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+    .section {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        cursor: pointer;
+        position: relative;
+    }
+    .section h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+    .toggle-icon {
+        margin-left: auto;
+        font-size: 16px;
+        transition: transform 0.3s ease;
+    }
+    .section-content {
+        display: block; /* Default to open */
+        padding-top: 10px;
+    }
+    .fridge-item-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+    .fridge-item-table, .fridge-item-table th, .fridge-item-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    .fridge-item-table th {
+        background-color: #f2f2f2;
+    }
+    .fridge-item-table td {
+        text-align: left;
+    }
+    .hide-columns {
+        display: none;
+    }
+    .button-container {
+        margin-bottom: 20px;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+        padding-top: 60px;
+    }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .view-cart-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+     .goback {
+        position: absolute;
+        top: 80px;
+        right: 20px;
+        background-color: grey;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .home {
+        position: absolute;
+        top: 80px;
+        right: 120px;
+        background-color: #191970;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+<h1>Fridge List</h1>
+
+<button class="view-cart-button" onclick="viewCart()">View Cart</button>
+<button class="goback" onclick="goBack()"><-Back</button>
+<button class="home" onclick="home()">Home</button>
+
+
+<div class="button-container">
+  <button onclick="showColumns()">Show Dealer Details</button>
+  <button onclick="hideColumns()">Hide Dealer Details</button>
+</div>
+
+<div class="container">
+  <div id="dcSection" class="section" onclick="toggleSection('dcSectionContent', this)">
+    <h2>DC(Single Door) <span class="toggle-icon">▼</span></h2>
+    <div id="dcSectionContent" class="section-content">
+      <table class="fridge-item-table">
+        <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>Model Description</th>
+          <th>Color</th>
+          <th>Capacity(L)</th>
+          <th>Star Rating(*)</th>
+          <th>Quantity</th>
+          <th class="toggle-column">MRP</th>
+          <th class="hide-columns">MOP</th>
+          <th class="hide-columns">DP</th>
+          <th class="hide-columns">Margin</th>
+          <th class="hide-columns">Margin %</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fridge : ${listdc}">
+          <td th:text="${fridge.productId}"></td>
+          <td th:text="${fridge.brand}"></td>
+          <td th:text="${fridge.model}"></td>
+          <td th:text="${fridge.modelDesc}"></td>
+          <td th:text="${fridge.color}"></td>
+          <td th:text="${fridge.capacity}"></td>
+          <td th:text="${fridge.starRating}"></td>
+          <td th:text="${fridge.quantity}"></td>
+          <td th:text="${fridge.mrp}"></td>
+          <td class="hide-columns" th:text="${fridge.mop}"></td>
+          <td class="hide-columns" th:text="${fridge.dp}"></td>
+          <td class="hide-columns" th:text="${fridge.margin}"></td>
+          <td class="hide-columns" th:text="${fridge.marginPer}"></td>
+          <td>
+            <form id="addToCartForm1" action="/addCart" method="post" onsubmit="return handleFormSubmit(this)">
+              <input type="hidden" name="productId" th:value="${fridge.productId}" />
+              <button type="submit">Add to Cart</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="ffSection" class="section" onclick="toggleSection('ffSectionContent', this)">
+    <h2>FF(Double Door)<span class="toggle-icon">▼</span></h2>
+    <div id="ffSectionContent" class="section-content">
+      <table class="fridge-item-table">
+        <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>Model Description</th>
+          <th>Color</th>
+          <th>Capacity(L)</th>
+          <th>Star Rating(*)</th>
+          <th>Quantity</th>
+          <th class="toggle-column">MRP</th>
+          <th class="hide-columns">MOP</th>
+          <th class="hide-columns">DP</th>
+          <th class="hide-columns">Margin</th>
+          <th class="hide-columns">Margin %</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fridge : ${listff}">
+          <td th:text="${fridge.productId}"></td>
+          <td th:text="${fridge.brand}"></td>
+          <td th:text="${fridge.model}"></td>
+          <td th:text="${fridge.modelDesc}"></td>
+          <td th:text="${fridge.color}"></td>
+          <td th:text="${fridge.capacity}"></td>
+          <td th:text="${fridge.starRating}"></td>
+          <td th:text="${fridge.quantity}"></td>
+          <td th:text="${fridge.mrp}"></td>
+          <td class="hide-columns" th:text="${fridge.mop}"></td>
+          <td class="hide-columns" th:text="${fridge.dp}"></td>
+          <td class="hide-columns" th:text="${fridge.margin}"></td>
+          <td class="hide-columns" th:text="${fridge.marginPer}"></td>
+          <td>
+            <form id="addToCartForm2" action="/addCart" method="post" onsubmit="return handleFormSubmit(this)">
+              <input type="hidden" name="productId" th:value="${fridge.productId}" />
+              <button type="submit">Add to Cart</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div id="passwordModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Enter Password</h2>
+    <input type="password" id="passwordInput" placeholder="Enter password">
+    <button onclick="checkPassword()">Submit</button>
+  </div>
+</div>
+
+<script>
+    function toggleSection(sectionId, sectionElement) {
+        var sectionContent = document.getElementById(sectionId);
+        var toggleIcon = sectionElement.querySelector('.toggle-icon');
+
+        if (sectionContent.style.display === "none" || sectionContent.style.display === "") {
+            sectionContent.style.display = "block";
+            toggleIcon.textContent = "▼"; // Downward arrow
+        } else {
+            sectionContent.style.display = "none";
+            toggleIcon.textContent = "▶"; // Rightward arrow
+        }
+    }
+
+    function showColumns() {
+        document.getElementById('passwordModal').style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById('passwordModal').style.display = "none";
+    }
+
+    function checkPassword() {
+        var password = document.getElementById('passwordInput').value;
+        var correctPassword = "palakyuvraj";
+
+        if (password === correctPassword) {
+            var elements = document.querySelectorAll('.hide-columns');
+            elements.forEach(function(element) {
+                element.style.display = "table-cell";
+            });
+            closeModal();
+        } else {
+            alert("Incorrect password!");
+        }
+    }
+
+    function hideColumns() {
+        var elements = document.querySelectorAll('.hide-columns');
+        elements.forEach(function(element) {
+            element.style.display = "none";
+        });
+    }
+     function viewCart() {
+        window.location.href = '/viewCart'; // Redirect to the viewCart page
+    }
+
+    function handleFormSubmit(form) {
+
+     // Get the current URL
+    const currentUrl = window.location.href;
+
+    // Create a hidden input element
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'currentUrl';
+    hiddenInput.value = currentUrl;
+
+    // Append the hidden input to the form
+    form.appendChild(hiddenInput);
+
+        alert('1 item added successfully');
+        return true; // Proceed with form submission
+    }
+    function goBack() {
+        window.location.href = '/fridge/';
+    }
+    function home(){
+    window.location.href = '/home'
+    }
+</script>
+</body>
+</html>
