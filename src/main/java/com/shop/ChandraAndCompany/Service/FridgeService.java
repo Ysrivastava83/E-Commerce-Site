@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FridgeService {
@@ -44,6 +45,19 @@ public class FridgeService {
             listff.add(fridge);
         }
         return listff;
+    }
+
+    public void reduceQuantity(Integer productId,Integer quantity)
+    {
+        int presentQuantity=fridgeDAO.findQuantityById(productId);
+        fridgeDAO.updateQuantity(presentQuantity-quantity,productId);
+
+    }
+
+    public Optional<Fridge> getByModel(int modelNum)
+    {
+       // System.out.println();
+        return fridgeDAO.findById(modelNum);
     }
 }
 

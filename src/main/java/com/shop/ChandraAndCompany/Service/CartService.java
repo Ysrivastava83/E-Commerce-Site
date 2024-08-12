@@ -18,28 +18,28 @@ public class CartService
     FridgeDAO fridgeDAO;
     public List<Fridge> getbyId(List<Integer> item)
     {
-        HashMap<Integer,Integer> hashMap=new HashMap<>();
-        List<Fridge> listfridge=new ArrayList<>();
-        for (Integer i:item)
-        {
-            if(hashMap.containsKey(i))
-            {
-                hashMap.put(i,hashMap.get(i)+1);
-            }
-            else
-                hashMap.put(i,1);
-        }
-        System.out.println(item);
-        System.out.println(hashMap);
-        listfridge=fridgeDAO.findAllById(item);
+            List<Fridge> listfridge=new ArrayList<>();
+            listfridge=fridgeDAO.findAllById(item);
+//        HashMap<Integer,Integer> hashMap=new HashMap<>();
+//
+//        for (Integer i:item)
+//        {
+//            if(hashMap.containsKey(i))
+//            {
+//                hashMap.put(i,hashMap.get(i)+1);
+//            }
+//            else
+//                hashMap.put(i,1);
+//        }
+        //System.out.println(item);
+        // System.out.println(hashMap);
 
-        for (Fridge fridge : listfridge) {
-            Integer count = hashMap.get(fridge.getProductId());
-            if (count != null) {
-                fridge.setQuantity(count);
-            }
-        }
+//        for (Fridge fridge : listfridge) {
+//            Integer count = hashMap.get(fridge.getProductId());
+//            if (count != null) {
+//                fridge.setQuantity(count);
+//            }
+//        }
         return listfridge;
-
     }
 }

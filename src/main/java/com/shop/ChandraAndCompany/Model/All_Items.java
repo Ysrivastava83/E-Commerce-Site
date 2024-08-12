@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @Data
 public class All_Items
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int itemId;

@@ -55,11 +55,49 @@
     .delete-btn:hover {
       background-color: #c62828; /* Darker red on hover */
     }
+    /* Custom confirmation dialog styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 300px;
+      text-align: center;
+    }
+    .modal-content button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .modal-content .confirm-btn {
+      background-color: #4CAF50;
+    }
+    .modal-content .cancel-btn {
+      background-color: #f44336;
+    }
   </style>
 </head>
 <body>
 <h1>Cart Items</h1>
-<form action="/generateBill" method="post" onsubmit="return validateForm()">
+<form action="/generateBill" method="post" onsubmit="return showCustomDialog()">
   <table>
     <thead>
     <tr>
@@ -74,12 +112,12 @@
       <th>MRP</th>
       <th>Quantity</th>
       <th>Purchasing Price</th>
-      <th>Delete</th> <!-- Added Action column for Delete button -->
+      <th>Delete</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="item : ${cartItem}">
-      <td th:text="${item.productId}"></td>
+    <tr th:each="item, iterStat : ${cartItem}">
+      <td id="productId-${item.productId}" th:text="${item.productId}"></td>
       <td th:text="${item.brand}"></td>
       <td th:text="${item.type}"></td>
       <td th:text="${item.model}"></td>
@@ -88,9 +126,11 @@
       <td th:text="${item.capacity}"></td>
       <td th:text="${item.starRating}"></td>
       <td th:text="${item.mrp}"></td>
-      <td th:text="${item.quantity}"></td>
       <td>
-        <input type="number" name="purchasingPrice_${item.productId}" step="0.01" min="0" placeholder="Enter price"/>
+        <input type="number" name="quantity" step="1" min="1" value="1" oninput="updateButtonState()">
+      </td>
+      <td>
+        <input type="number" name="purchasingPrice" step="1" min="0" placeholder="Enter price" oninput="updateButtonState()">
       </td>
       <td>
         <button type="button" class="delete-btn" onclick="deleteRow(this)">Delete</button>
@@ -98,6 +138,7 @@
     </tr>
     </tbody>
   </table>
+  <input type="hidden" name="productId" id="productId">
   <div class="button-container">
     <button type="submit" class="disabled" disabled>Generate Bill</button>
   </div>
@@ -105,53 +146,43 @@
 
 <script>
   function validateForm() {
-    // Get all input elements for purchasing price
-    const inputs = document.querySelectorAll('input[name^="purchasingPrice_"]');
-
-    // Check if all input fields are filled
-    for (let input of inputs) {
-      if (!input.value) {
-        alert('Please enter amount for all products.');
-        return false; // Prevent form submission
-      }
-    }
-
-    // All fields are filled, allow form submission
-    return true;
+    // Validation logic (if any)
   }
 
   function updateButtonState() {
-    const inputs = document.querySelectorAll('input[name^="purchasingPrice_"]');
+    const quantityInputs = document.querySelectorAll('input[name="quantity"]');
+    const priceInputs = document.querySelectorAll('input[name="purchasingPrice"]');
     const button = document.querySelector('button[type="submit"]');
-
-    // Check if all input fields are filled
     let allFilled = true;
-    for (let input of inputs) {
-      if (!input.value) {
+
+    for (let i = 0; i < quantityInputs.length; i++) {
+      if (!quantityInputs[i].value || !priceInputs[i].value) {
         allFilled = false;
         break;
       }
     }
 
-    // Enable or disable the button based on input fields
     button.disabled = !allFilled;
     button.classList.toggle('disabled', !allFilled);
   }
 
   function deleteRow(button) {
-    // Show confirmation dialog
     const confirmation = confirm('Are you sure you want to delete this item?');
     if (confirmation) {
-      // Find the row containing the clicked button and remove it
       const row = button.closest('tr');
       row.remove();
-
-      // Update the button state after deletion
       updateButtonState();
     }
   }
 
-  document.addEventListener('input', updateButtonState);
+  function showCustomDialog() {
+    // Collect all product IDs into an array
+    var idElements = document.querySelectorAll('[id^="productId-"]');
+    var ids = Array.from(idElements).map(element => element.textContent);
+    document.getElementById('productId').value = ids.join(',');
+
+    return true; // Allow form submission
+  }
 </script>
 </body>
 </html>

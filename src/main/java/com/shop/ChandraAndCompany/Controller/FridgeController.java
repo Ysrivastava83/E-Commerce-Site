@@ -5,12 +5,10 @@ import com.shop.ChandraAndCompany.Service.FridgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/fridge")
@@ -21,6 +19,7 @@ public class FridgeController
     List<Fridge> listfridge;
     List<Fridge> listdc;
     List<Fridge> listff;
+    Optional<Fridge> fridgeByModel;
     @GetMapping("/")
     public String fridgeHome()
     {
@@ -74,5 +73,14 @@ public class FridgeController
            listfridge=fridgeService.getall();
            model.addAttribute("listfridge",listfridge);
             return "/Fridge/All_Fridge";
+        }
+
+        @GetMapping("/byModel")
+        public String getByModel(Model model,@RequestParam int modelNum)
+        {
+            fridgeByModel=fridgeService.getByModel(modelNum);
+            model.addAttribute("byModelNum",fridgeByModel);
+            System.out.println(fridgeByModel);
+            return "/Fridge/Fridge_byModel";
         }
 }

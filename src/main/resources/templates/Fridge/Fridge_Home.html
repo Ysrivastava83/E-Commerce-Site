@@ -103,9 +103,9 @@
 </div>
 <div class="options-bar">
   <div class="option" onclick="location.href='all'">Display all</div>
-  <div class="option" onclick="location.href='#'">Search by Model</div>
-  <div class="option" onclick="location.href='#'">Orders</div>
-  <div class="option" onclick="location.href='#'">Settings</div>
+  <div class="option" onclick="byModel()">Search by Model</div>
+  <div class="option" onclick="location.href='#'">Add new Fridge Model</div>
+  <div class="option" onclick="location.href='#'">Edit Quantity</div>
 </div>
 <div class="box-container">
   <div class="box" onclick="location.href='Whirlpool';">
@@ -134,4 +134,17 @@
   </div>
 </div>
 </body>
+
+<script>
+function byModel() {
+    const id = prompt("Please Enter ID");
+    if (id !== null && id.trim() !== "") {
+        // Redirect to 'byModel' with the ID as a query parameter
+        window.location.href = `byModel?modelNum=${encodeURIComponent(id)}`;
+    } else {
+        alert("No ID entered.");
+    }
+}
+
+</script>
 </html>

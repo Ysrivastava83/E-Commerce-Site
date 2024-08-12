@@ -16,6 +16,8 @@ import java.util.List;
 public class All_Items_Controller
 {
     List<All_Items> items;
+
+    static final String homeURL="http://localhost:8080/home";
     @Autowired
     All_Items_Service allItemsService;
     @GetMapping("/home")
