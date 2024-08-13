@@ -30,7 +30,7 @@ public class FridgeService {
         List<Fridge> listdc=new ArrayList<>();
         for (Fridge fridge:listfridge)
         {
-            if (fridge.getType().equals("DC"))
+            if (fridge.getType().equals("DC") && fridge.getQuantity()>0)
                 listdc.add(fridge);
         }
                     return listdc;
@@ -41,7 +41,7 @@ public class FridgeService {
         List<Fridge> listff=new ArrayList<>();
         for (Fridge fridge:listfridge)
         {
-            if(fridge.getType().equals("FF"))
+            if(fridge.getType().equals("FF") && fridge.getQuantity()>0)
             listff.add(fridge);
         }
         return listff;
@@ -58,6 +58,16 @@ public class FridgeService {
     {
        // System.out.println();
         return fridgeDAO.findById(modelNum);
+    }
+
+    public void addNewFridgeDetails(Fridge fridge)
+    {
+        fridge.setMargin(fridge.getMop()-fridge.getDp());
+        double val= (double)(fridge.getMargin()*100)/ fridge.getDp();
+        fridge.setMarginPer((double)Math.round(val*100)/100);
+         System.out.println(val);
+         System.out.println(fridge);
+         fridgeDAO.save(fridge);
     }
 }
 

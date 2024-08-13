@@ -83,4 +83,19 @@ public class FridgeController
             System.out.println(fridgeByModel);
             return "/Fridge/Fridge_byModel";
         }
+
+        @GetMapping("/AddNewFridge")
+        public String addNewFridge()
+        {
+            return "/Fridge/AddNewFridge";
+        }
+
+
+        @PostMapping("/AddNewFridgeDetails")
+        public String addNewFridgeDetails(Model model,@ModelAttribute Fridge fridge)
+        {
+            fridgeService.addNewFridgeDetails(fridge);
+            return "/Fridge/Fridge_Message.html";
+        }
+
 }
