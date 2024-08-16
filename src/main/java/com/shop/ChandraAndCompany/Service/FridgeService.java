@@ -69,5 +69,15 @@ public class FridgeService {
          System.out.println(fridge);
          fridgeDAO.save(fridge);
     }
+
+    public void delete(int productId)
+    {
+        fridgeDAO.deleteById(productId);
+    }
+
+    public void updateValue(Fridge fridge)
+    {
+        fridgeDAO.save(fridge);
+    }
 }
 

@@ -95,7 +95,41 @@ public class FridgeController
         public String addNewFridgeDetails(Model model,@ModelAttribute Fridge fridge)
         {
             fridgeService.addNewFridgeDetails(fridge);
-            return "/Fridge/Fridge_Message.html";
+            return "/Fridge/Fridge_Message";
         }
 
+        @GetMapping("/EditFridge")
+        public String editFridge(Model model)
+        {
+            List<Fridge> fridge=fridgeService.getall();
+            //System.out.println(fridge);
+            model.addAttribute("fridge",fridge);
+            return "/Fridge/Fridge_EditShowAll";
+        }
+
+        @RequestMapping("/deleteFridge")
+        public String deleteFridge(@RequestParam int productId)
+        {
+            //System.out.println(productId);
+            fridgeService.delete(productId);
+            return "redirect:" + "http://localhost:8080/fridge/EditFridge";
+        }
+
+        @RequestMapping("/EditFridgeById")
+        public String editFridgeById(@RequestParam int productId,Model model)
+        {
+            Optional<Fridge> optionalFridge=fridgeService.getByModel(productId);
+            Fridge fridge = optionalFridge.orElse(new Fridge());
+            System.out.println(fridge);
+            model.addAttribute("fridge",fridge);
+            return  "/Fridge/Fridge_Edit";
+        }
+
+        @RequestMapping("/UpdateFridge")
+        public String updateValues(@ModelAttribute Fridge fridge)
+        {
+            System.out.println(fridge);
+            fridgeService.updateValue(fridge);
+            return "/Fridge/Fridge_Message";
+        }
 }
